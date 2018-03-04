@@ -6,19 +6,26 @@
  */
 public class Tuple {
 
-	public Tuple(int keyP, String valueP) {
-		
+	public int key;
+	public String value;
+
+	Tuple(int keyP, String valueP) {
+		this.key = keyP;
+		this.value = valueP;
 	}
-	
+
 	public int getKey() {
-		return 0;
+		return key;
 	}
-	
-	public String Value() {
-		return null;
+
+	public String getValue() {
+		return value;
 	}
-	
+
 	public boolean equals(Tuple t) {
+		if (this.key == t.key && this.value == t.value) {
+			return true;
+		}
 		return false;
 	}
 }
