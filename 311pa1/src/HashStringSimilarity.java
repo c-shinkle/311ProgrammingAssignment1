@@ -60,8 +60,7 @@ public class HashStringSimilarity {
 	
 	private void fillTable(HashTable table, String s) {
 		for (int i = 0; i < s.length()-shingleLength+1;i++) {
-			String sub = s.substring(i, i+shingleLength);
-			//
+			String sub = substring(s, i, i+shingleLength);
 			int result = 0;
 			for (int j = 0; j < shingleLength; j++)
 				result += sub.charAt(j);
@@ -71,7 +70,18 @@ public class HashStringSimilarity {
 		}
 	}
 	
-	private boolean tableContains(HashTable table, int result) {
-		return table.search(result).size()==0;
+	private String substring(String s, int start, int end) {
+		char[] arr = new char[end-start];
+		for (int i = start; i < end; i++)
+			arr[i] = s.charAt(i);
+		return new String(s);
+	}
+
+	private boolean tableContains(HashTable table, int key) {
+		return table.search(key).size()==0;
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 }
