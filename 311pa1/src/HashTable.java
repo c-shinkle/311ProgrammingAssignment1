@@ -8,27 +8,25 @@ import java.util.ArrayList;
  */
 public class HashTable {
 
-	int tableSize;
+	private int tableSize, numberOfUniqueElements;
 
-	ArrayList<Tuple>[] bucketArray;
+	private ArrayList<ArrayList<Tuple>> bucketArray;
 
-	HashFunction hashFunction;
+	private HashFunction hashFunction;
 
-	@SuppressWarnings("unchecked")
-	HashTable(int size) {
+	public HashTable(int size) {
 		int p = smallestPrimeBiggerThan(size);
-
 		this.tableSize = p;
 		this.hashFunction = new HashFunction(p);
-		bucketArray = new ArrayList[p];
+		bucketArray = new ArrayList<ArrayList<Tuple>>(p);
 	}
 
 	public int maxLoad() {
-		return 1;
+		return tableSize;
 	}
 
 	public float averageLoad() {
-		return 1;
+		return numberOfUniqueElements /tableSize;
 	}
 
 	public int size() {
@@ -36,13 +34,7 @@ public class HashTable {
 	}
 
 	public int numElements() {
-		int numOfElements = 0;
-		for (int i = 0; i < bucketArray.length; i++) {
-			if (bucketArray[i] != null) {
-				// Compare
-			}
-		}
-		return numOfElements;
+		return numberOfUniqueElements;
 	}
 
 	public float loadFactor() {
@@ -51,22 +43,18 @@ public class HashTable {
 
 	public void add(Tuple t) {
 		int index = hashFunction.hash(t.key);
-		if (bucketArray[index] == null) {
-			ArrayList<Tuple> newList = new ArrayList<Tuple>();
-			bucketArray[index] = newList;
-			newList.add(t);
-		} else {
-			bucketArray[index].add(t);
-		}
+		if (bucketArray.get(index) == null)
+			bucketArray.add(new ArrayList<>());
+		bucketArray.get(index).add(t);
 	}
 
 	public ArrayList<Tuple> search(int k) {
 		ArrayList<Tuple> foundTuples = new ArrayList<Tuple>();
 		int index = hashFunction.hash(k);
-		if (bucketArray[index] != null) {
-			for (int i = 0; i < bucketArray[index].size(); i++) {
-				if (bucketArray[index].get(i).key == k) {
-					foundTuples.add(bucketArray[index].get(i));
+		if (bucketArray.get(index) != null) {
+			for (int i = 0; i < bucketArray.get(index).size(); i++) {
+				if (bucketArray.get(index).get(i).key == k) {
+					foundTuples.add(bucketArray.get(index).get(i));
 				}
 			}
 		}
@@ -76,9 +64,9 @@ public class HashTable {
 	public int search(Tuple t) {
 		int numOfTuples = 0;
 		int index = hashFunction.hash(t.key);
-		if (bucketArray[index] != null) {
-			for (int i = 0; i < bucketArray[index].size(); i++) {
-				if (bucketArray[index].get(i).equals(t)) {
+		if (bucketArray.get(index) != null) {
+			for (int i = 0; i < bucketArray.get(index).size(); i++) {
+				if (bucketArray.get(index).get(i).equals(t)) {
 					numOfTuples++;
 				}
 			}
@@ -88,13 +76,13 @@ public class HashTable {
 
 	public void remove(Tuple t) {
 		int index = hashFunction.hash(t.key);
-		if (bucketArray[index] != null) {
-				bucketArray[index].remove(t);
+		if (bucketArray.get(index) != null) {
+				bucketArray.get(index).remove(t);
 		}
 	}
 
 	// helper method for finding prime number
-	public static boolean isPrime(int n) {
+	private  boolean isPrime(int n) {
 		if (n % 2 == 0) {
 			return false;
 		}
@@ -107,7 +95,7 @@ public class HashTable {
 	}
 
 	// helper method for finding prime number
-	public static int smallestPrimeBiggerThan(int num) {
+	private int smallestPrimeBiggerThan(int num) {
 		while (!isPrime(num)) {
 			++num;
 		}
