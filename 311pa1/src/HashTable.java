@@ -18,6 +18,7 @@ public class HashTable {
 		this.hashFunction = new HashFunction(tableSize);
 		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
 		maxLoad = 0;
+		prepareArrayList();
 	}
 	
 	public int maxLoad() {
@@ -43,7 +44,7 @@ public class HashTable {
 	public void add(Tuple t) {
 		int index = hashFunction.hash(t.key);
 		if (bucketArray.get(index) == null) {
-			bucketArray.add(new ArrayList<>());
+			bucketArray.add(index, new ArrayList<>());
 			numberOfUniqueElements++;
 		}
 		else if (!bucketArray.get(index).contains(t))
@@ -122,7 +123,8 @@ public class HashTable {
 	private int sumOfAllBuckets() {
 		int result = 0;
 		for (ArrayList<Tuple> al : bucketArray)
-			result += al.size();
+			if (al != null)
+				result += al.size();
 		return result;
 	}
 	// helper method for finding prime number
@@ -146,5 +148,10 @@ public class HashTable {
 			++num;
 		}
 		return num;
+	}
+
+	private void prepareArrayList() {
+		for (int i = 0; i < tableSize; i++)
+			bucketArray.add(null);
 	}
 }
