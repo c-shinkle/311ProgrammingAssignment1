@@ -1,3 +1,5 @@
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class HashStringTest
@@ -13,27 +15,16 @@ public class HashStringTest
     public static float vectorAnswer1 = (float) Math.sqrt(24);
     public static float vectorAnswer2 = (float) Math.sqrt(17);
     public static float similarityAnswer = (float) (22 / (Math.sqrt(38) * Math.sqrt(27)));
-
-    /**
-     * Returns true if the distance between a and b is within a tolerance.
-     * 
-     * @param a
-     * @param b
-     * @param tolerance
-     * @return
-     */
-    public static boolean fuzzyEquals(float a, float b, float tolerance)
-    {
-        return Math.abs(a - b) < tolerance;
-    }
+    
+    public final double EPSILON = .001;
 
     @Test
     public void bruteForceVectorLength()
     {
         BruteForceSimilarity bfs = new BruteForceSimilarity(
                 vectorString1, vectorString2, vectorShingleLength);
-        assert (bfs.lengthOfS1() == vectorAnswer1);
-        assert (bfs.lengthOfS2() == vectorAnswer2);
+        assertEquals(bfs.lengthOfS1(), vectorAnswer1, EPSILON);
+        assertEquals(bfs.lengthOfS2(), vectorAnswer2, EPSILON);
     }
 
     @Test
@@ -41,7 +32,7 @@ public class HashStringTest
     {
         BruteForceSimilarity bfs = new BruteForceSimilarity(
                 similarityString1, similarityString2, similarityShingleLength);
-        assert (bfs.similarity() == similarityAnswer);
+        assertEquals(bfs.similarity(), similarityAnswer, EPSILON);
     }
 
     @Test
@@ -49,9 +40,9 @@ public class HashStringTest
     {
         HashStringSimilarity bfs = new HashStringSimilarity(
                 vectorString1, vectorString2, vectorShingleLength);
-        bfs.vectorCounts("ve ewr wr");
-        assert (bfs.lengthOfS1() == vectorAnswer1);
-        assert (bfs.lengthOfS2() == vectorAnswer2);
+        //bfs.vectorCounts("ve ewr wr");
+        assertEquals(bfs.lengthOfS1(), vectorAnswer1, EPSILON );
+        assertEquals(bfs.lengthOfS2() == vectorAnswer2,EPSILON);
     }
 
     @Test
@@ -59,7 +50,7 @@ public class HashStringTest
     {
         HashStringSimilarity bfs = new HashStringSimilarity(
                 similarityString1, similarityString2, similarityShingleLength);
-        assert (bfs.similarity() == similarityAnswer);
+        assertEquals(bfs.similarity(), similarityAnswer, EPSILON);
     }
 
     @Test
@@ -67,8 +58,8 @@ public class HashStringTest
     {
         HashCodeSimilarity bfs = new HashCodeSimilarity(
                 vectorString1, vectorString2, vectorShingleLength);
-        assert (bfs.lengthOfS1() == vectorAnswer1);
-        assert (bfs.lengthOfS2() == vectorAnswer2);
+        assertEquals(bfs.lengthOfS1(), vectorAnswer1, EPSILON);
+        assertEquals(bfs.lengthOfS2(), vectorAnswer2, EPSILON);
     }
 
     @Test
@@ -76,9 +67,6 @@ public class HashStringTest
     {
         HashCodeSimilarity bfs = new HashCodeSimilarity(
                 similarityString1, similarityString2, similarityShingleLength);
-        assert (fuzzyEquals(bfs.similarity(), similarityAnswer, 0.02f));
+        assertEquals(bfs.similarity(), similarityAnswer, EPSILON);
     }
-}
-
-
-
+} 

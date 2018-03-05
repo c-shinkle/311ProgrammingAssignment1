@@ -24,8 +24,6 @@ public class HashStringSimilarity {
 	public float lengthOfS1() {
 		return length(true);
 	}
-	
-	
 
 	public float lengthOfS2() {
 		return length(false);
