@@ -4,6 +4,7 @@ import org.junit.Test;
 
 public class HashStringTest
 {
+	//An idiot wrote these cases and that makes me sad :'( 
     public static String similarityString1 = "aroseisaroseisarose";
     public static String similarityString2 = "aroseisaflowerwhichisarose";
     
@@ -24,6 +25,7 @@ public class HashStringTest
     public final double EPSILON = .001;
 
     @Test
+
     public void hashStringVectorLength()
     {
     	 HashStringSimilarity bfs = new HashStringSimilarity(
