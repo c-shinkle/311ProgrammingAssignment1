@@ -24,11 +24,11 @@ public class BruteForceSimilarity {
 		double squaredval=0;
 		int counter=0;
 		int j = 0;
-		ArrayList<Character> duplicates = new ArrayList<Character>();
+		ArrayList<String> duplicates = new ArrayList<String>();
 		int i = 0;
 		while(i<sample.length()){
 			counter =0;
-			if(duplicates.contains(sample.charAt(i))==false){
+			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
 					if(sample.charAt(i)==sample.charAt(j)){
 						counter ++;
@@ -37,7 +37,7 @@ public class BruteForceSimilarity {
 				}
 				j=0;
 				squaredval = squaredval + java.lang.Math.pow(counter,2);
-				duplicates.add(sample.charAt(i));
+				duplicates.add(substring(i,sample));
 			}
 			i++;
 		}
@@ -50,11 +50,11 @@ public class BruteForceSimilarity {
 		double squaredval=0;
 		int counter=0;
 		int j = 0;
-		ArrayList<Character> duplicates = new ArrayList<Character>();
+		ArrayList<String> duplicates = new ArrayList<String>();
 		int i = 0;
 		while(i<sample.length()){
 			counter =0;
-			if(duplicates.contains(sample.charAt(i))==false){
+			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
 					if(sample.charAt(i)==sample.charAt(j)){
 						counter ++;
@@ -63,7 +63,7 @@ public class BruteForceSimilarity {
 				}
 				j=0;
 				squaredval = squaredval + java.lang.Math.pow(counter,2);
-				duplicates.add(sample.charAt(i));
+				duplicates.add(substring(i,sample));
 			}
 			i++;
 		}
@@ -74,16 +74,16 @@ public class BruteForceSimilarity {
 	public float similarity() {
 		String sample1= this.s1;
 		String sample2=this.s2;
-		ArrayList<Character> arr = new ArrayList<Character>();
+		ArrayList<String> arr = new ArrayList<String>();
 		int total = 0;
 		int ins1, ins2;
 		int j;
 		
 			for(j=0;j<sample1.length();j++){
-				if(!arr.contains(sample1.charAt(j))){
-					arr.add(sample1.charAt(j));
-					ins1 = occurance(sample1,sample1.charAt(j));
-					ins2 = occurance(sample2,sample1.charAt(j));
+				if(!arr.contains(substring(j,sample1))){
+					arr.add((substring(j,sample1)));
+					ins1 = occurance(sample1,substring(j,sample1));
+					ins2 = occurance(sample2,substring(j,sample1));
 					if(ins2==0){
 						
 					}
@@ -98,13 +98,26 @@ public class BruteForceSimilarity {
 		end = (total/(lengthOfS2()*lengthOfS1()));
 		return end;
 	}
-	public int occurance(String s, char i){
+	public int occurance(String s, String i){
 		int counter=0;
 		for(int k = 0; k<s.length();k++){
-			if(i==s.charAt(k)){
+			String holder = substring(k,s);
+			if(i.equals(holder)){
 				counter++;
 			}
 		}
 		return counter;
+	}
+	public String substring(int startingindex, String s){
+		String sub = "";
+		if(startingindex+sLength>s.length()){
+			return sub;
+		}
+		else{
+			for(int i = 0; i<this.sLength;i++){
+				sub = sub + s.charAt(startingindex);
+			}
+		}
+		return sub;
 	}
 }
