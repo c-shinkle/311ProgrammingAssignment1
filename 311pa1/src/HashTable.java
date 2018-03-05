@@ -7,26 +7,25 @@ import java.util.ArrayList;
  */
 public class HashTable {
 
-	private int tableSize;
-	
-	private int numberOfUniqueElements;
+	private int tableSize, maxLoad, numberOfUniqueElements;
 
 	private ArrayList<ArrayList<Tuple>> bucketArray;
 
-	private final HashFunction hashFunction;
+	private HashFunction hashFunction;
 
 	public HashTable(int size) {
 		this.tableSize = smallestPrimeBiggerThan(size);
 		this.hashFunction = new HashFunction(tableSize);
 		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
+		maxLoad = 0;
 	}
-	//TODO
+	
 	public int maxLoad() {
-		return tableSize;
+		return maxLoad;
 	}
-	//TODO
+	
 	public float averageLoad() {
-		return numberOfUniqueElements /tableSize;
+		return sumOfAllBuckets() /tableSize;
 	}
 
 	public int size() {
@@ -40,7 +39,7 @@ public class HashTable {
 	public float loadFactor() {
 		return numElements() / size();
 	}
-	//TODO
+	
 	public void add(Tuple t) {
 		int index = hashFunction.hash(t.key);
 		if (bucketArray.get(index) == null) {
@@ -50,6 +49,10 @@ public class HashTable {
 		else if (!bucketArray.get(index).contains(t))
 			numberOfUniqueElements++;
 		bucketArray.get(index).add(t);
+		if (bucketArray.get(index).size() == maxLoad+1)
+			maxLoad++;
+		if (loadFactor() > 0.7)
+			resizeTable();
 	}
 
 	public ArrayList<Tuple> search(int k) {
@@ -77,16 +80,53 @@ public class HashTable {
 		}
 		return numOfTuples;
 	}
-	
 
 	public void remove(Tuple t) {
 		int index = hashFunction.hash(t.key);
-		if (bucketArray.get(index) != null) {
-				bucketArray.get(index).remove(t);
+		ArrayList<Tuple> bucketList = bucketArray.get(index);
+		if (bucketList != null) {
+			if (bucketList.remove(t)) {
+				tableSize--;
+				if (!bucketList.contains(t))
+					numberOfUniqueElements--;
+				if (bucketList.size() != maxLoad-1)
+					maxLoad = findLargestBucketList();
+			}
 		}
 	}
+	
+	private void resizeTable() {
+		tableSize = smallestPrimeBiggerThan(tableSize * 2);
+		hashFunction = new HashFunction(tableSize);
+		maxLoad = numberOfUniqueElements = 0;
+		
+		ArrayList<Tuple> allTuples = new ArrayList<>();
+		for (ArrayList<Tuple> al : bucketArray)
+			for (Tuple t : al)
+				allTuples.add(t);
+		
+		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
+		
+		for (Tuple t : allTuples) 
+			add(t);
+	}
+	
 
+	private int findLargestBucketList() {
+		int result = -1;
+		for (ArrayList<Tuple> al : bucketArray)
+			Math.max(result, al.size());
+		return result;
+	}
+	
+	private int sumOfAllBuckets() {
+		int result = 0;
+		for (ArrayList<Tuple> al : bucketArray)
+			result += al.size();
+		return result;
+	}
 	// helper method for finding prime number
+	
 	private boolean isPrime(int n) {
 		if (n % 2 == 0) {
 			return false;
