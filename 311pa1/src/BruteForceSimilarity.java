@@ -30,7 +30,7 @@ public class BruteForceSimilarity {
 			counter =0;
 			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
-					if(sample.charAt(i)==sample.charAt(j)){
+					if(substring(i,sample).equals(substring(j,sample))){
 						counter ++;
 					}
 					j++;
@@ -56,7 +56,7 @@ public class BruteForceSimilarity {
 			counter =0;
 			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
-					if(sample.charAt(i)==sample.charAt(j)){
+					if(substring(i,sample).equals(substring(j,sample))){
 						counter ++;
 					}
 					j++;
