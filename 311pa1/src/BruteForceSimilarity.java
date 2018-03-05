@@ -115,7 +115,7 @@ public class BruteForceSimilarity {
 		}
 		else{
 			for(int i = 0; i<this.sLength;i++){
-				sub = sub + s.charAt(startingindex);
+				sub = sub + s.charAt(startingindex+i);
 			}
 		}
 		return sub;
