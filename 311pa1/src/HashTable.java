@@ -52,8 +52,9 @@ public class HashTable {
 		bucketArray.get(index).add(t);
 		if (bucketArray.get(index).size() == maxLoad+1)
 			maxLoad++;
-		if (loadFactor() > 0.7)
+		if (loadFactor() > 0.7) {
 			resizeTable();
+		}
 	}
 
 	public ArrayList<Tuple> search(int k) {
@@ -100,14 +101,16 @@ public class HashTable {
 		tableSize = smallestPrimeBiggerThan(tableSize * 2);
 		hashFunction = new HashFunction(tableSize);
 		maxLoad = numberOfUniqueElements = 0;
-		
+
 		ArrayList<Tuple> allTuples = new ArrayList<>();
 		for (ArrayList<Tuple> al : bucketArray)
-			for (Tuple t : al)
-				allTuples.add(t);
-		
+			if (al != null)
+				for (Tuple t : al)
+					if (t != null)
+						allTuples.add(t);
+
 		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
-		
+		prepareArrayList();
 		for (Tuple t : allTuples) 
 			add(t);
 	}
