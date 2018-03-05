@@ -7,23 +7,24 @@ import java.util.ArrayList;
  */
 public class HashTable {
 
-	private int tableSize, numberOfUniqueElements;
+	private int tableSize;
+	
+	private int numberOfUniqueElements;
 
 	private ArrayList<ArrayList<Tuple>> bucketArray;
 
-	private HashFunction hashFunction;
+	private final HashFunction hashFunction;
 
 	public HashTable(int size) {
-		int p = smallestPrimeBiggerThan(size);
-		this.tableSize = p;
-		this.hashFunction = new HashFunction(p);
-		bucketArray = new ArrayList<ArrayList<Tuple>>(p);
+		this.tableSize = smallestPrimeBiggerThan(size);
+		this.hashFunction = new HashFunction(tableSize);
+		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
 	}
-
+	//TODO
 	public int maxLoad() {
 		return tableSize;
 	}
-
+	//TODO
 	public float averageLoad() {
 		return numberOfUniqueElements /tableSize;
 	}
@@ -35,15 +36,19 @@ public class HashTable {
 	public int numElements() {
 		return numberOfUniqueElements;
 	}
-
+	
 	public float loadFactor() {
 		return numElements() / size();
 	}
-
+	//TODO
 	public void add(Tuple t) {
 		int index = hashFunction.hash(t.key);
-		if (bucketArray.get(index) == null)
+		if (bucketArray.get(index) == null) {
 			bucketArray.add(new ArrayList<>());
+			numberOfUniqueElements++;
+		}
+		else if (!bucketArray.get(index).contains(t))
+			numberOfUniqueElements++;
 		bucketArray.get(index).add(t);
 	}
 
@@ -72,6 +77,7 @@ public class HashTable {
 		}
 		return numOfTuples;
 	}
+	
 
 	public void remove(Tuple t) {
 		int index = hashFunction.hash(t.key);
@@ -81,7 +87,7 @@ public class HashTable {
 	}
 
 	// helper method for finding prime number
-	private  boolean isPrime(int n) {
+	private boolean isPrime(int n) {
 		if (n % 2 == 0) {
 			return false;
 		}
@@ -92,6 +98,7 @@ public class HashTable {
 		}
 		return true;
 	}
+	
 
 	// helper method for finding prime number
 	private int smallestPrimeBiggerThan(int num) {
