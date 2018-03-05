@@ -72,6 +72,39 @@ public class BruteForceSimilarity {
 	}
 	
 	public float similarity() {
-		return 0;
+		String sample1= this.s1;
+		String sample2=this.s2;
+		ArrayList<Character> arr = new ArrayList<Character>();
+		int total = 0;
+		int ins1, ins2;
+		int j;
+		
+			for(j=0;j<sample1.length();j++){
+				if(!arr.contains(sample1.charAt(j))){
+					arr.add(sample1.charAt(j));
+					ins1 = occurance(sample1,sample1.charAt(j));
+					ins2 = occurance(sample2,sample1.charAt(j));
+					if(ins2==0){
+						
+					}
+					else{
+						total = total + (ins1*ins2);
+					}
+				}
+			}
+		
+		
+		float end =0;
+		end = (total/(lengthOfS2()*lengthOfS1()));
+		return end;
+	}
+	public int occurance(String s, char i){
+		int counter=0;
+		for(int k = 0; k<s.length();k++){
+			if(i==s.charAt(k)){
+				counter++;
+			}
+		}
+		return counter;
 	}
 }
