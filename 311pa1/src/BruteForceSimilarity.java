@@ -82,12 +82,12 @@ public class BruteForceSimilarity {
 			for(j=0;j<sample1.length();j++){
 				if(!arr.contains(substring(j,sample1))){
 					arr.add((substring(j,sample1)));
-					ins1 = occurance(sample1,substring(j,sample1));
 					ins2 = occurance(sample2,substring(j,sample1));
 					if(ins2==0){
 						
 					}
 					else{
+						ins1 = occurance(sample1,substring(j,sample1));
 						total = total + (ins1*ins2);
 					}
 				}
