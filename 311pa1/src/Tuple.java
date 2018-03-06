@@ -28,4 +28,9 @@ public class Tuple {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + key + ", " + value + ")";
+	}
 }
