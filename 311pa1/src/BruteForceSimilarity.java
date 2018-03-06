@@ -30,7 +30,7 @@ public class BruteForceSimilarity {
 			counter =0;
 			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
-					if(sample.charAt(i)==sample.charAt(j)){
+					if(substring(i,sample).equals(substring(j,sample))){
 						counter ++;
 					}
 					j++;
@@ -56,7 +56,7 @@ public class BruteForceSimilarity {
 			counter =0;
 			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
-					if(sample.charAt(i)==sample.charAt(j)){
+					if(substring(i,sample).equals(substring(j,sample))){
 						counter ++;
 					}
 					j++;
@@ -82,12 +82,12 @@ public class BruteForceSimilarity {
 			for(j=0;j<sample1.length();j++){
 				if(!arr.contains(substring(j,sample1))){
 					arr.add((substring(j,sample1)));
-					ins1 = occurance(sample1,substring(j,sample1));
 					ins2 = occurance(sample2,substring(j,sample1));
 					if(ins2==0){
 						
 					}
 					else{
+						ins1 = occurance(sample1,substring(j,sample1));
 						total = total + (ins1*ins2);
 					}
 				}
@@ -115,7 +115,7 @@ public class BruteForceSimilarity {
 		}
 		else{
 			for(int i = 0; i<this.sLength;i++){
-				sub = sub + s.charAt(startingindex);
+				sub = sub + s.charAt(startingindex+i);
 			}
 		}
 		return sub;
