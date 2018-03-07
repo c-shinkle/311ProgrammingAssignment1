@@ -7,9 +7,13 @@ import java.util.ArrayList;
  * @author Benjamin Trettin
  */
 public class HashStringSimilarity {
+	
 	private HashTable table1,table2;
+	
 	private int shingleLength;
+	
 	private ArrayList<Integer> keys;
+	
 	public HashStringSimilarity(String s1, String s2, int sLength) {
 		keys = new ArrayList<>();
 		shingleLength=sLength;
@@ -28,6 +32,7 @@ public class HashStringSimilarity {
 	}
 	
 	public float similarity() {
+		
 		return 0;
 	}
 	
@@ -63,24 +68,68 @@ public class HashStringSimilarity {
 		return result;
 	}
 	
-	private void fillTable(HashTable table, String s) {
-		for (int i = 0; i < s.length()-shingleLength+1;i++) {
-			String sub = substring(s, i, i+shingleLength);
-			int hash = stringHash(sub);
+	void fillTable(HashTable table, String s) {
+		final int prime = 1000000007, alpha = 31, mod = 2147483647;
+		int hash = 0, power = 1;
+		
+//		for (int i = 0; i < s.length(); i++)
+//			power = (power * primeBase) % primeMod;
+//		
+//		for (int i = 0; i < shingleLength; i++)
+//			hash = rollingHashFromInternet(hash, s, i, power, primeMod, primeBase);
+		
+		for (int i = shingleLength-1; i >= 0; i--) {
+			int c = s.charAt(i);
+			hash = (hash + c * power) % mod;
+			power *= alpha;
+		}
+		power /= alpha;
+		
+		for (int i = 0; i < s.length()-shingleLength; i++) {
+			//hash = substring(s, i, i+shingleLength).hashCode();
 			if (!tableContains(table, hash))
-				keys.add(hash);
-			table.add(new Tuple(hash, sub));
+					keys.add(hash);
+			table.add(new Tuple(hash, substring(s, i, i+shingleLength)));
+			
+			//hash = rollingHashFromInternet(hash, s, i, power, primeMod, primeBase);
+			hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
 		}
 	}
-	
-	private int stringHash(String sub) {
-		int result = 0;
-		for (int j = 0; j < shingleLength; j++)
-			result += sub.charAt(j);
-		return result;
-		//return sub.hashCode();
-	}
 
+	private int rollingHashFromInternet(int hash, String s, int index, int power, 
+			final int primeMod, final int primeBase) {
+		hash = hash * primeBase + s.charAt(index);
+		hash %= primeMod;
+		if (hash < 0)
+			hash += primeMod;
+		if (index >= shingleLength)
+			hash -= power * s.charAt(index-shingleLength);
+		return hash;
+	}
+	
+	private int rollingHashFromLecture(int hash, String s, int index, 
+			int power, int alpha, int mod) {
+		int oldchar = s.charAt(index);
+		int newchar = s.charAt(index+shingleLength);
+		hash = ((hash - (oldchar * power)) * alpha + newchar) % mod;
+		
+//		int slowHash = 0;
+//		int slowPower = 1;
+//		int i;
+//		for (i = index+shingleLength; i > index; i--) {
+//			int c = s.charAt(i);
+//			slowHash = (slowHash + (c * slowPower)) % mod;
+//			slowPower *= alpha;
+//		}
+		
+		return hash;
+//		if (slowHash == hash)
+//			return hash;
+//		else 
+//			throw new NullPointerException("The hashes aren't the same!\n"
+//					+ "slowHash = " + slowHash + "\nrollHash = " + hash);
+	}
+	
 	private String substring(String s, int start, int end) {
 		char[] arr = new char[end-start];
 		for (int i = 0; start + i < end; i++)
