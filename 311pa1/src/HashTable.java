@@ -9,16 +9,17 @@ public class HashTable {
 
 	private int tableSize, maxLoad, numberOfUniqueElements;
 
-	private ArrayList<ArrayList<Tuple>> bucketArray;
+	private ArrayList<Tuple>[] bucketArray;
 
 	private HashFunction hashFunction;
 
+	@SuppressWarnings("unchecked")
 	public HashTable(int size) {
 		this.tableSize = smallestPrimeBiggerThan(size);
 		this.hashFunction = new HashFunction(tableSize);
-		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
+		bucketArray = new ArrayList[tableSize];
 		maxLoad = 0;
-		prepareArrayList();
+		//prepareArrayList();
 	}
 	
 	public int maxLoad() {
@@ -43,14 +44,14 @@ public class HashTable {
 	
 	public void add(Tuple t) {
 		int index = hashFunction.hash(t.key);
-		if (bucketArray.get(index) == null) {
-			bucketArray.add(index, new ArrayList<>());
+		if (bucketArray[index] == null) {
+			bucketArray[index] = new ArrayList<>();
 			numberOfUniqueElements++;
 		}
-		else if (!bucketArray.get(index).contains(t))
+		else if (!contains(bucketArray[index], t))
 			numberOfUniqueElements++;
-		bucketArray.get(index).add(t);
-		if (bucketArray.get(index).size() == maxLoad+1)
+		bucketArray[index].add(t);
+		if (bucketArray[index].size() == maxLoad+1)
 			maxLoad++;
 		if (loadFactor() > 0.7) {
 			resizeTable();
@@ -60,10 +61,10 @@ public class HashTable {
 	public ArrayList<Tuple> search(int k) {
 		ArrayList<Tuple> foundTuples = new ArrayList<Tuple>();
 		int index = hashFunction.hash(k);
-		if (bucketArray.get(index) != null) {
-			for (int i = 0; i < bucketArray.get(index).size(); i++) {
-				if (bucketArray.get(index).get(i).key == k) {
-					foundTuples.add(bucketArray.get(index).get(i));
+		if (bucketArray[index] != null) {
+			for (int i = 0; i < bucketArray[index].size(); i++) {
+				if (bucketArray[index].get(i).key == k) {
+					foundTuples.add(bucketArray[index].get(i));
 				}
 			}
 		}
@@ -73,9 +74,9 @@ public class HashTable {
 	public int search(Tuple t) {
 		int numOfTuples = 0;
 		int index = hashFunction.hash(t.key);
-		if (bucketArray.get(index) != null) {
-			for (int i = 0; i < bucketArray.get(index).size(); i++) {
-				if (bucketArray.get(index).get(i).equals(t)) {
+		if (bucketArray[index] != null) {
+			for (int i = 0; i < bucketArray[index].size(); i++) {
+				if (bucketArray[index].get(i).equals(t)) {
 					numOfTuples++;
 				}
 			}
@@ -85,7 +86,7 @@ public class HashTable {
 
 	public void remove(Tuple t) {
 		int index = hashFunction.hash(t.key);
-		ArrayList<Tuple> bucketList = bucketArray.get(index);
+		ArrayList<Tuple> bucketList = bucketArray[index];
 		if (bucketList != null) {
 			if (bucketList.remove(t)) {
 				tableSize--;
@@ -97,6 +98,7 @@ public class HashTable {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void resizeTable() {
 		tableSize = smallestPrimeBiggerThan(tableSize * 2);
 		hashFunction = new HashFunction(tableSize);
@@ -109,8 +111,8 @@ public class HashTable {
 					if (t != null)
 						allTuples.add(t);
 
-		bucketArray = new ArrayList<ArrayList<Tuple>>(tableSize);
-		prepareArrayList();
+		bucketArray = new ArrayList[tableSize];
+		//prepareArrayList();
 		for (Tuple t : allTuples) 
 			add(t);
 	}
@@ -153,8 +155,15 @@ public class HashTable {
 		return num;
 	}
 
-	private void prepareArrayList() {
-		for (int i = 0; i < tableSize; i++)
-			bucketArray.add(null);
+	private boolean contains(ArrayList<Tuple> arr, Tuple t) {
+		for (Tuple s : arr)
+			if (t.equals(s))	
+				return true;
+		return false;
 	}
+	
+//	private void prepareArrayList() {
+//		for (int i = 0; i < tableSize; i++)
+//			bucketArray.add(null);
+//	}
 }
