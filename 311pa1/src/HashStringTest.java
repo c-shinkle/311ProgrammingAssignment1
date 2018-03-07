@@ -19,9 +19,10 @@ public class HashStringTest {
 	public static float vectorAnswer3 = (float) Math.sqrt(21);
 	public static float vectorAnswer4 = (float) Math.sqrt(13);
 
-	public static float similarityAnswer = (float) (22 / (Math.sqrt(38) * Math.sqrt(27)));
+	public static float similarityAnswer1 = (float) (22 / (Math.sqrt(38) * Math.sqrt(27)));
+	public static float similarityAnswer2 = (float) (21 / (Math.sqrt(21) * Math.sqrt(27)));
 
-	public final double EPSILON = 1.0;
+	public final double EPSILON = .1;
 
 	@Test
 	public void hashStringVectorLength() {
@@ -31,13 +32,25 @@ public class HashStringTest {
 		assertEquals(vectorAnswer1, actual1, EPSILON);
 		assertEquals(vectorAnswer2, actual2, EPSILON);
 	}
+	@Test
+	public void hashStringSimilarity() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+		float actual = bfs.similarity();
+		assertEquals(similarityAnswer1,actual,EPSILON);
+	}
 
 	@Test
 	public void hashStringVectorLength2() {
-		HashStringSimilarity bfs2 = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+		HashStringSimilarity bfs2 = new HashStringSimilarity(similarityString1, similarityString2, shingleLength2);
 		float actual1 = bfs2.lengthOfS1();
 		float actual2 = bfs2.lengthOfS2();
 		assertEquals(vectorAnswer3, actual1, EPSILON);
 		assertEquals(vectorAnswer4, actual2, EPSILON);
+	}
+	@Test
+	public void hashStringSimilarity2() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
+		float actual = bfs.similarity();
+		assertEquals(similarityAnswer2,actual,EPSILON);
 	}
 }
