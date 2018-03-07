@@ -8,14 +8,14 @@ import java.util.ArrayList;
  */
 public class HashStringSimilarity {
 	
-	private HashTable table1,table2;
+	private HashTable table1, table2;
 	
 	private int shingleLength;
 	
-	private ArrayList<Integer> keys;
+	private ArrayList<Tuple> tuples;
 	
 	public HashStringSimilarity(String s1, String s2, int sLength) {
-		keys = new ArrayList<>();
+		tuples = new ArrayList<>();
 		shingleLength=sLength;
 		table1 = new HashTable(s1.length()-sLength+1);
 		table2 = new HashTable(s2.length()-sLength+1);
@@ -32,18 +32,32 @@ public class HashStringSimilarity {
 	}
 	
 	public float similarity() {
-		
-		return 0;
+		int numerator = findAllDuplicates();
+		float denominator = lengthOfS1() + lengthOfS2();
+		return numerator/denominator;
+	}
+	
+	private int findAllDuplicates() {
+		int sum = 0;
+		for (Tuple key : tuples) {
+			int bin1Count = table1.search(key);
+			int bin2Count = table2.search(key);
+			if (bin1Count > 0 && bin2Count > 0) {
+				sum += bin1Count * bin2Count;
+			}
+		}
+		return sum;
 	}
 	
 	private float length(boolean isS1) {
 		HashTable table = (isS1) ? table1 : table2;
 		double result = 0;
-		for (Integer key : keys) {
-			ArrayList<Integer> count = countNumberOfEachTypeOfTuple(table.search(key));
-			for (Integer i : count) {
-				result += (i*i);
-			}
+		for (Tuple key : tuples) {
+			result += table.search(key);
+//			ArrayList<Integer> count = countNumberOfEachTypeOfTuple(table.search(key));
+//			for (Integer i : count) {
+//				result += (i*i);
+//			}
 		}
 		return (float) Math.sqrt(result);
 	}
@@ -68,8 +82,8 @@ public class HashStringSimilarity {
 		return result;
 	}
 	
-	void fillTable(HashTable table, String s) {
-		final int prime = 1000000007, alpha = 31, mod = 2147483647;
+	private void fillTable(HashTable table, String s) {
+		final int alpha = 31, mod = 2147483647;
 		int hash = 0, power = 1;
 		
 //		for (int i = 0; i < s.length(); i++)
@@ -86,10 +100,10 @@ public class HashStringSimilarity {
 		power /= alpha;
 		
 		for (int i = 0; i < s.length()-shingleLength; i++) {
-			//hash = substring(s, i, i+shingleLength).hashCode();
-			if (!tableContains(table, hash))
-					keys.add(hash);
-			table.add(new Tuple(hash, substring(s, i, i+shingleLength)));
+			Tuple tmp = new Tuple(hash, substring(s, i, i+shingleLength));
+			if (!tableContains(table, tmp))
+					tuples.add(tmp);
+			table.add(tmp);
 			
 			//hash = rollingHashFromInternet(hash, s, i, power, primeMod, primeBase);
 			hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
@@ -137,7 +151,7 @@ public class HashStringSimilarity {
 		return new String(arr);
 	}
 
-	private boolean tableContains(HashTable table, int key) {
-		return table.search(key).size()!=0;
+	private boolean tableContains(HashTable table, Tuple key) {
+		return table.search(key) > 0;
 	}
 }
