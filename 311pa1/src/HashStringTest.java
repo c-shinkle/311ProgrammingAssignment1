@@ -1,5 +1,9 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import org.junit.Test;
 
 public class HashStringTest {
@@ -23,6 +27,26 @@ public class HashStringTest {
 	public static float similarityAnswer2 = (float) (21 / (Math.sqrt(21) * Math.sqrt(27)));
 
 	public final double EPSILON = .1;
+	
+	public static String textFile1 = null;
+	public static String textFile2 = null;
+	
+	public void fileScan() throws FileNotFoundException {
+		
+	File test1file = new File("../test1.txt");
+	Scanner sc = new Scanner(test1file);
+	while(sc.hasNext()) {
+		textFile1 = sc.next();
+	}
+	sc.close();
+	
+	File test2file = new File("../test2.txt");
+	Scanner sc2 = new Scanner(test2file);
+	while(sc2.hasNext()) {
+		textFile2 = sc2.next();
+	}
+	sc2.close();
+	}
 
 	@Test
 	public void hashStringVectorLength() {
@@ -52,5 +76,17 @@ public class HashStringTest {
 		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
 		float actual = bfs.similarity();
 		assertEquals(similarityAnswer2,actual,EPSILON);
+	}
+	@Test
+	public void testAllSimilarities() {
+		HashStringSimilarity stringSimilarity = new HashStringSimilarity(textFile1, textFile2, shingleLength);
+		HashCodeSimilarity codeSimilarity = new HashCodeSimilarity(textFile1, textFile2, shingleLength);
+		BruteForceSimilarity forceSimilarity = new BruteForceSimilarity(textFile1, textFile2, shingleLength);
+		float stringSim = stringSimilarity.similarity();
+		float CodeSim = codeSimilarity.similarity();
+		float BruteSim = forceSimilarity.similarity();
+		assertEquals(stringSim,CodeSim,EPSILON);
+		assertEquals(stringSim,BruteSim,EPSILON);
+		assertEquals(CodeSim,BruteSim,EPSILON);
 	}
 }
