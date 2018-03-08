@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 /**
  * 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class BruteForceSimilarity {
 	float size1, size2;
 	float similarity;
+	float s1leng, s2leng;
 	String s1, s2;
 	int sLength;
 	public int numerator;
@@ -16,34 +18,47 @@ public class BruteForceSimilarity {
 		//Assuming slength is the length of s2
 		this.s1=s1;
 		this.s2=s2;
+	
 		this.sLength=sLength;
+		s1leng=lengthOfS1();
+
+		s2leng=lengthOfS2();
+	
 		
 	}
 	
 	public float lengthOfS1() {
 		String sample = this.s1;
-		double squaredval=0;
+		float squaredval=(float) 0.0;
 		int counter=0;
 		int j = 0;
-		ArrayList<String> duplicates = new ArrayList<String>();
+		ArrayList<String> stringHolder = new ArrayList<String>();
 		int i = 0;
 		while(i<sample.length()-sLength+1){
-			counter =0;
-			if(duplicates.contains(substring(i,sample))==false){
-				while(j<sample.length()){
-					if(substring(i,sample).equals(substring(j,sample))){
-						counter ++;
-					}
-					j++;
-				}
-				j=0;
-				squaredval = squaredval + java.lang.Math.pow(counter,2);
-				duplicates.add(substring(i,sample));
-			}
+			stringHolder.add(substring(i,sample));
 			i++;
 		}
+		i=0;
 		
-		return (float) java.lang.Math.sqrt(squaredval);
+		while(stringHolder.size()!=0){
+			String holder = stringHolder.get(0);
+			counter = 0;
+			while(j<stringHolder.size()){
+				if(holder.equals(stringHolder.get(j))){
+					stringHolder.remove(j);
+					counter ++;
+					
+				}
+				else{
+				j++;
+				}
+			}
+			squaredval = squaredval + (counter*counter);
+			i++;
+			j=0;
+		}
+		
+		return (float) Math.sqrt(squaredval);
 	}
 	
 	public float lengthOfS2() {
@@ -51,22 +66,30 @@ public class BruteForceSimilarity {
 		double squaredval=0;
 		int counter=0;
 		int j = 0;
-		ArrayList<String> duplicates = new ArrayList<String>();
+		ArrayList<String> stringHolder = new ArrayList<String>();
 		int i = 0;
-		while(i<sample.length()){
-			counter =0;
-			if(duplicates.contains(substring(i,sample))==false){
-				while(j<sample.length()-sLength+1){
-					if(substring(i,sample).equals(substring(j,sample))){
-						counter ++;
-					}
-					j++;
-				}
-				j=0;
-				squaredval = squaredval + java.lang.Math.pow(counter,2);
-				duplicates.add(substring(i,sample));
-			}
+		while(i<sample.length()-sLength+1){
+			stringHolder.add(substring(i,sample));
 			i++;
+		}
+		i=0;
+		
+		while(stringHolder.size()!=0){
+			String holder = stringHolder.get(0);
+			counter = 0;
+			while(j<stringHolder.size()){
+				if(holder.equals(stringHolder.get(j))){
+					stringHolder.remove(j);
+					counter ++;
+					
+				}
+				else{
+				j++;
+				}
+			}
+			squaredval = squaredval + (counter*counter);
+			i++;
+			j=0;
 		}
 		
 		return (float) java.lang.Math.sqrt(squaredval);
@@ -75,42 +98,60 @@ public class BruteForceSimilarity {
 	public float similarity() {
 		String sample1= this.s1;
 		String sample2=this.s2;
-		ArrayList<String> arr = new ArrayList<String>();
+		ArrayList<String> arr1 = new ArrayList<String>();
+		ArrayList<String> arr2 = new ArrayList<String>();
 		int total = 0;
 		int ins1, ins2;
+		ins1=0;
+		ins2=0;
+		int i=0;
 		int j=0;
+		while(i<sample1.length()-sLength+1){
+			arr1.add(substring(i,sample1));
+			i++;
+		}
+		while(j<sample1.length()-sLength+1){
+			arr2.add(substring(j,sample2));
+			j++;
+		}
 		
-			while(j<sample1.length()-sLength+1){
-				if(!arr.contains(substring(j,sample1))){
-					arr.add((substring(j,sample1)));
-					ins2 = occurance(sample2,substring(j,sample1));
-					if(ins2==0){
+		String holder;
+			while(arr1.size()!=0){
+				i=0;
+				j=0;
+				ins1=0;
+				ins2=0;
+				holder=arr1.get(0);
+				while(i<arr1.size()){
+					if(holder.equals(arr1.get(i))){
+						arr1.remove(i);
+						ins1 ++;
 						
 					}
 					else{
-						ins1 = occurance(sample1,substring(j,sample1));
-						total = total + (ins1*ins2);
+					i++;
 					}
 				}
-				j++;
+				while(j<arr2.size()){
+					if(holder.equals(arr2.get(j))){
+						arr2.remove(j);
+						ins2 ++;
+						
+					}
+					else{
+					j++;
+					}
+				}
+				total = total + (ins1*ins2);
+				
+		
 			}
-		
-		
 		float end =0;
 		numerator=total;
-		end = (total/(lengthOfS2()*lengthOfS1()));
+		end = (total/(s2leng*s1leng));
 		return end;
 	}
-	public int occurance(String s, String i){
-		int counter=0;
-		for(int k = 0; k<s.length();k++){
-			String holder = substring(k,s);
-			if(i.equals(holder)){
-				counter++;
-			}
-		}
-		return counter;
-	}
+	
 	public String substring(int startingindex, String s){
 		String sub = "";
 		if(startingindex+sLength>s.length()){
