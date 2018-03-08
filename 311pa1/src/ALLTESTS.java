@@ -127,14 +127,14 @@ public class ALLTESTS {
 		public void hashStringVectorLength01part2() {
 			HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
 			bfs.similarity();
-			int expected = 21;
+			int expected = 27;
 			assertEquals(expected,bfs.vectorLength1Squared);
 		}
 		@Test
 		public void hashStringVectorLength02part2() {
 			HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
 			bfs.similarity();
-			int expected = 27;
+			int expected = 32;
 			assertEquals(expected,bfs.vectorLength2Squared);
 		}
 
@@ -142,7 +142,7 @@ public class ALLTESTS {
 		public void numberatorhashStringSimilaritypart2() {
 			HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
 			bfs.similarity();
-			int expected = 21;
+			int expected = 24;
 			assertEquals(expected,bfs.numerator);
 		}
 		
