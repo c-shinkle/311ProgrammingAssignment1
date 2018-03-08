@@ -27,7 +27,7 @@ public class HashTable {
 	}
 	
 	public float averageLoad() {
-		return sumOfAllBuckets() /tableSize;
+		return (float) ((sumOfAllBuckets() * 1.0) / tableSize);
 	}
 
 	public int size() {
@@ -39,7 +39,7 @@ public class HashTable {
 	}
 	
 	public float loadFactor() {
-		return numElements() / size();
+		return (float) ((numElements() * 1.0) / size());
 	}
 	
 	public void add(Tuple t) {
@@ -117,7 +117,6 @@ public class HashTable {
 			add(t);
 	}
 	
-
 	private int findLargestBucketList() {
 		int result = -1;
 		for (ArrayList<Tuple> al : bucketArray)
@@ -146,7 +145,6 @@ public class HashTable {
 		return true;
 	}
 	
-
 	// helper method for finding prime number
 	private int smallestPrimeBiggerThan(int num) {
 		while (!isPrime(num)) {
@@ -162,8 +160,4 @@ public class HashTable {
 		return false;
 	}
 	
-//	private void prepareArrayList() {
-//		for (int i = 0; i < tableSize; i++)
-//			bucketArray.add(null);
-//	}
-}
+} 
