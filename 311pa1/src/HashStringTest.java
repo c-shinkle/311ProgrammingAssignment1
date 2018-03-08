@@ -26,7 +26,7 @@ public class HashStringTest {
 	public static float similarityAnswer1 = (float) (22 / (Math.sqrt(38) * Math.sqrt(27)));
 	public static float similarityAnswer2 = (float) (21 / (Math.sqrt(21) * Math.sqrt(27)));
 
-	public final double EPSILON = .1;
+	public final double EPSILON = .0000001;
 	
 	public static String textFile1 = null;
 	public static String textFile2 = null;
@@ -58,14 +58,14 @@ public class HashStringTest {
 	}
 	@Test
 	public void hashStringSimilarity() {
-		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+		BruteForceSimilarity bfs = new BruteForceSimilarity(similarityString1, similarityString2, shingleLength);
 		float actual = bfs.similarity();
 		assertEquals(similarityAnswer1,actual,EPSILON);
 	}
 
 	@Test
 	public void hashStringVectorLength2() {
-		HashStringSimilarity bfs2 = new HashStringSimilarity(similarityString1, similarityString2, shingleLength2);
+		BruteForceSimilarity bfs2 = new BruteForceSimilarity(similarityString3, similarityString4, shingleLength2);
 		float actual1 = bfs2.lengthOfS1();
 		float actual2 = bfs2.lengthOfS2();
 		assertEquals(vectorAnswer3, actual1, EPSILON);
