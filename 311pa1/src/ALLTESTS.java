@@ -146,6 +146,25 @@ public class ALLTESTS {
 			assertEquals(expected,bfs.numerator);
 		}
 		
+		@Test
+		public void hashStringVectorLength11() {
+			HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+			assertEquals(vectorAnswer1, bfs.lengthOfS1(), EPSILON);
+		}
+		
+		@Test
+		public void hashStringVectorLength21() {
+			HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+			assertEquals(vectorAnswer2, bfs.lengthOfS2(), EPSILON);
+		}
+		
+		@Test
+		public void numberatorhashStringSimilarity1() {
+			HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+			bfs.similarity();
+			assertEquals(similarityAnswer1, bfs.similarity(), EPSILON);
+		}
+		
 		// @Test
 		// public void testAllSimilarities() {
 		// HashStringSimilarity stringSimilarity = new
