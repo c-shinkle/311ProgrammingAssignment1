@@ -6,8 +6,8 @@
  */
 public class Tuple {
 
-	public int key;
-	public String value;
+	private int key;
+	private String value;
 
 	Tuple(int keyP, String valueP) {
 		this.key = keyP;
