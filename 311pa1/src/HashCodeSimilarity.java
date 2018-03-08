@@ -105,7 +105,7 @@ public class HashCodeSimilarity {
 		power /= alpha;
 
 		for (int i = 0; i < s.length() - shingleLength + 1; i++) {
-			if (table != null && !tableContains(table, hash))
+			if (!tableContains(table1, hash) && !tableContains(table2, hash))
 				keys.add(hash);
 			String sub = substring(s, i, i + shingleLength);
 			table.add(new Tuple(hash, sub));

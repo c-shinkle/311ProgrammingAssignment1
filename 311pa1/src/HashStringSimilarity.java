@@ -92,7 +92,7 @@ public class HashStringSimilarity {
 
 		for (int i = 0; i < s.length() - shingleLength + 1; i++) {
 			Tuple tmp = new Tuple(hash, substring(s, i, i + shingleLength));
-			if (!tableContains(table, tmp))
+			if (!tableContains(table1, tmp) && !tableContains(table2, tmp))
 				tuples.add(tmp);
 			table.add(tmp);
 			if (i < s.length() - shingleLength)
