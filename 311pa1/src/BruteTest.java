@@ -3,7 +3,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class BruteTest {
-
+	public static String similarityString1 = "aroseisaroseisarose";
+	public static String similarityString2 = "aroseisaflowerwhichisarose";
+	public static int shingleLength = 4;
+	public static float similarityAnswer1 = (float) (22 / (Math.sqrt(38) * Math.sqrt(27)));
+	
 	private final double ep = .001;
 
 	@Test
@@ -41,6 +45,12 @@ public class BruteTest {
 		BruteForceSimilarity c = new BruteForceSimilarity("1268264612","251188438",1);
 		
 		assertEquals(c.similarity(),.544,ep);
+	}
+	public void thisisrosetest() {
+		BruteForceSimilarity a = new BruteForceSimilarity(similarityString1,similarityString2,4);
+		
+		
+		assertEquals(a.similarity(),similarityAnswer1,ep);
 	}
 
 }
