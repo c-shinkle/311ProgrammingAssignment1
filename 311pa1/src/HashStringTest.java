@@ -49,36 +49,28 @@ public class HashStringTest {
 	}
 
 	@Test
-	public void hashStringVectorLength() {
+	public void hashStringVectorLength01() {
 		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
-		float actual1 = bfs.lengthOfS1();
-		float actual2 = bfs.lengthOfS2();
-		assertEquals(vectorAnswer1, actual1, EPSILON);
-		assertEquals(vectorAnswer2, actual2, EPSILON);
+		bfs.similarity();
+		int expected = 38;
+		assertEquals(expected,bfs.vectorLength1Squared);
+	}
+	@Test
+	public void hashStringVectorLength02() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+		bfs.similarity();
+		int expected = 27;
+		assertEquals(expected,bfs.vectorLength2Squared);
 	}
 
 	@Test
-	public void hashStringSimilarity() {
-		BruteForceSimilarity bfs = new BruteForceSimilarity(similarityString1, similarityString2, shingleLength);
-		float actual = bfs.similarity();
-		assertEquals(similarityAnswer1, actual, EPSILON);
+	public void numberatorhashStringSimilarity() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
+		bfs.similarity();
+		int expected = 22;
+		assertEquals(expected,bfs.numerator);
 	}
-
-	@Test
-	public void hashStringVectorLength2() {
-		BruteForceSimilarity bfs2 = new BruteForceSimilarity(similarityString3, similarityString4, shingleLength2);
-		float actual1 = bfs2.lengthOfS1();
-		float actual2 = bfs2.lengthOfS2();
-		assertEquals(vectorAnswer3, actual1, EPSILON);
-		assertEquals(vectorAnswer4, actual2, EPSILON);
-	}
-
-	@Test
-	public void hashStringSimilarity2() {
-		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
-		float actual = bfs.similarity();
-		assertEquals(similarityAnswer2, actual, EPSILON);
-	}
+	
 	// @Test
 	// public void testAllSimilarities() {
 	// HashStringSimilarity stringSimilarity = new
