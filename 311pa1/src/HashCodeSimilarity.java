@@ -17,8 +17,8 @@ public class HashCodeSimilarity {
 	public HashCodeSimilarity(String s1, String s2, int sLength) {
 		keys = new ArrayList<>();
 		shingleLength = sLength;
-		table1 = new HashTable(s1.length()-sLength+1);
-		table2 = new HashTable(s2.length()-sLength+1);
+		table1 = new HashTable(s1.length() - sLength + 1);
+		table2 = new HashTable(s2.length() - sLength + 1);
 		fillTable(table1, s1);
 		fillTable(table2, s2);
 	}
@@ -34,7 +34,7 @@ public class HashCodeSimilarity {
 	public float similarity() {
 		int numerator = calcNumerator();
 		float denominator = lengthOfS1() + lengthOfS2();
-		return numerator/denominator;
+		return numerator / denominator;
 	}
 
 	private int calcNumerator() {
@@ -42,7 +42,7 @@ public class HashCodeSimilarity {
 		for (Integer key : keys) {
 			ArrayList<Tuple> bin1 = table1.search(key);
 			ArrayList<Tuple> bin2 = table1.search(key);
-			if ((bin1!=null && bin2!=null) && (bin1.size()>0 && bin2.size()>0)) {
+			if ((bin1 != null && bin2 != null) && (bin1.size() > 0 && bin2.size() > 0)) {
 				int count1 = count(bin1, key);
 				int count2 = count(bin2, key);
 				sum += count1 * count2;
@@ -59,7 +59,7 @@ public class HashCodeSimilarity {
 		}
 		return count;
 	}
-	
+
 	private float length(boolean isS1) {
 		HashTable table = (isS1) ? table1 : table2;
 		double result = 0;
@@ -91,45 +91,46 @@ public class HashCodeSimilarity {
 		}
 		return result;
 	}
-	
+
 	private void fillTable(HashTable table, String s) {
 		final int alpha = 31, mod = 2147483647;
 		int hash = 0, power = 1;
-		
-		for (int i = shingleLength-1; i >= 0; i--) {
+
+		for (int i = shingleLength - 1; i >= 0; i--) {
 			int c = s.charAt(i);
 			hash = (hash + c * power) % mod;
 			power *= alpha;
 		}
-		
+
 		power /= alpha;
-		
-		for (int i = 0; i < s.length()-shingleLength; i++) {
+
+		for (int i = 0; i < s.length() - shingleLength + 1; i++) {
 			if (table != null && !tableContains(table, hash))
 				keys.add(hash);
-			String sub = substring(s, i, i+shingleLength);
+			String sub = substring(s, i, i + shingleLength);
 			table.add(new Tuple(hash, sub));
-			hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
+			if (i < s.length() - shingleLength)
+				hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
 		}
 	}
-	
+
 	private String substring(String s, int start, int end) {
-		char[] arr = new char[end-start];
+		char[] arr = new char[end - start];
 		for (int i = 0; start + i < end; i++)
-			arr[i] = s.charAt(start+i);
+			arr[i] = s.charAt(start + i);
 		return new String(arr);
 	}
-	
+
 	private int rollingHashFromLecture(int hash, String s, int index, int power, int alpha, int mod) {
 		int oldchar = s.charAt(index);
-		int newchar = s.charAt(index+shingleLength);
+		int newchar = s.charAt(index + shingleLength);
 		hash = ((hash - (oldchar * power)) * alpha + newchar) % mod;
-		
+
 		return hash;
 	}
-	
+
 	private boolean tableContains(HashTable table, int key) {
-		return table.search(key).size()!=0;
+		return table.search(key).size() != 0;
 	}
-	
-} 
+
+}
