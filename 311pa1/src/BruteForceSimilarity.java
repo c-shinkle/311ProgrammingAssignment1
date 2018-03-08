@@ -11,6 +11,7 @@ public class BruteForceSimilarity {
 	float similarity;
 	String s1, s2;
 	int sLength;
+	public int numerator;
 	public BruteForceSimilarity(String s1, String s2, int sLength) {
 		//Assuming slength is the length of s2
 		this.s1=s1;
@@ -26,7 +27,7 @@ public class BruteForceSimilarity {
 		int j = 0;
 		ArrayList<String> duplicates = new ArrayList<String>();
 		int i = 0;
-		while(i<sample.length()){
+		while(i<sample.length()-sLength+1){
 			counter =0;
 			if(duplicates.contains(substring(i,sample))==false){
 				while(j<sample.length()){
@@ -55,7 +56,7 @@ public class BruteForceSimilarity {
 		while(i<sample.length()){
 			counter =0;
 			if(duplicates.contains(substring(i,sample))==false){
-				while(j<sample.length()){
+				while(j<sample.length()-sLength+1){
 					if(substring(i,sample).equals(substring(j,sample))){
 						counter ++;
 					}
@@ -77,9 +78,9 @@ public class BruteForceSimilarity {
 		ArrayList<String> arr = new ArrayList<String>();
 		int total = 0;
 		int ins1, ins2;
-		int j;
+		int j=0;
 		
-			for(j=0;j<sample1.length();j++){
+			while(j<sample1.length()-sLength+1){
 				if(!arr.contains(substring(j,sample1))){
 					arr.add((substring(j,sample1)));
 					ins2 = occurance(sample2,substring(j,sample1));
@@ -91,10 +92,12 @@ public class BruteForceSimilarity {
 						total = total + (ins1*ins2);
 					}
 				}
+				j++;
 			}
 		
 		
 		float end =0;
+		numerator=total;
 		end = (total/(lengthOfS2()*lengthOfS1()));
 		return end;
 	}
