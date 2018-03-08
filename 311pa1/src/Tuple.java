@@ -23,7 +23,7 @@ public class Tuple {
 	}
 
 	public boolean equals(Tuple t) {
-		if (this.key == t.key && this.value == t.value) {
+		if (this.key == t.key && this.value.equals(t.value)) {
 			return true;
 		}
 		return false;

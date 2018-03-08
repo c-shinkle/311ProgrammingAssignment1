@@ -86,32 +86,24 @@ public class HashStringSimilarity {
 		final int alpha = 31, mod = 2147483647;
 		int hash = 0, power = 1;
 		
-//		for (int i = 0; i < s.length(); i++)
-//			power = (power * primeBase) % primeMod;
-//		
-//		for (int i = 0; i < shingleLength; i++)
-//			hash = rollingHashFromInternet(hash, s, i, power, primeMod, primeBase);
-		
 		for (int i = shingleLength-1; i >= 0; i--) {
 			int c = s.charAt(i);
 			hash = (hash + c * power) % mod;
 			power *= alpha;
 		}
+		
 		power /= alpha;
 		
 		for (int i = 0; i < s.length()-shingleLength; i++) {
 			Tuple tmp = new Tuple(hash, substring(s, i, i+shingleLength));
 			if (!tableContains(table, tmp))
-					tuples.add(tmp);
+				tuples.add(tmp);
 			table.add(tmp);
-			
-			//hash = rollingHashFromInternet(hash, s, i, power, primeMod, primeBase);
 			hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
 		}
 	}
 
-	private int rollingHashFromInternet(int hash, String s, int index, int power, 
-			final int primeMod, final int primeBase) {
+	private int rollingHashFromInternet(int hash, String s, int index, int power, final int primeMod, final int primeBase) {
 		hash = hash * primeBase + s.charAt(index);
 		hash %= primeMod;
 		if (hash < 0)
@@ -121,27 +113,12 @@ public class HashStringSimilarity {
 		return hash;
 	}
 	
-	private int rollingHashFromLecture(int hash, String s, int index, 
-			int power, int alpha, int mod) {
+	private int rollingHashFromLecture(int hash, String s, int index, int power, int alpha, int mod) {
 		int oldchar = s.charAt(index);
 		int newchar = s.charAt(index+shingleLength);
 		hash = ((hash - (oldchar * power)) * alpha + newchar) % mod;
 		
-//		int slowHash = 0;
-//		int slowPower = 1;
-//		int i;
-//		for (i = index+shingleLength; i > index; i--) {
-//			int c = s.charAt(i);
-//			slowHash = (slowHash + (c * slowPower)) % mod;
-//			slowPower *= alpha;
-//		}
-		
 		return hash;
-//		if (slowHash == hash)
-//			return hash;
-//		else 
-//			throw new NullPointerException("The hashes aren't the same!\n"
-//					+ "slowHash = " + slowHash + "\nrollHash = " + hash);
 	}
 	
 	private String substring(String s, int start, int end) {
@@ -154,4 +131,4 @@ public class HashStringSimilarity {
 	private boolean tableContains(HashTable table, Tuple key) {
 		return table.search(key) > 0;
 	}
-}
+} 
