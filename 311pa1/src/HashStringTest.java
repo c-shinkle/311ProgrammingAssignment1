@@ -70,6 +70,28 @@ public class HashStringTest {
 		int expected = 22;
 		assertEquals(expected,bfs.numerator);
 	}
+	@Test
+	public void hashStringVectorLength01part2() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
+		bfs.similarity();
+		int expected = 21;
+		assertEquals(expected,bfs.vectorLength1Squared);
+	}
+	@Test
+	public void hashStringVectorLength02part2() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
+		bfs.similarity();
+		int expected = 27;
+		assertEquals(expected,bfs.vectorLength2Squared);
+	}
+
+	@Test
+	public void numberatorhashStringSimilaritypart2() {
+		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
+		bfs.similarity();
+		int expected = 21;
+		assertEquals(expected,bfs.numerator);
+	}
 	
 	// @Test
 	// public void testAllSimilarities() {
