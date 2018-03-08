@@ -13,8 +13,12 @@ public class HashStringSimilarity {
 	private int shingleLength;
 
 	private ArrayList<Tuple> tuples;
+	
+	//TODO
+	public int numerator, vectorLength1Squared, vectorLength2Squared;
 
 	public HashStringSimilarity(String s1, String s2, int sLength) {
+		numerator = vectorLength1Squared = vectorLength2Squared = 0;
 		tuples = new ArrayList<>();
 		shingleLength = sLength;
 		table1 = new HashTable(s1.length() - sLength + 1);
@@ -32,7 +36,7 @@ public class HashStringSimilarity {
 	}
 
 	public float similarity() {
-		int numerator = findAllDuplicates();
+		numerator = findAllDuplicates();
 		float denominator = lengthOfS1() + lengthOfS2();
 		return numerator / denominator;
 	}
@@ -51,10 +55,14 @@ public class HashStringSimilarity {
 
 	private float length(boolean isS1) {
 		HashTable table = (isS1) ? table1 : table2;
-		double result = 0;
+		int result = 0;
 		for (Tuple key : tuples) {
 			result += table.search(key);
 		}
+		if (isS1)
+			vectorLength1Squared = result;
+		else 
+			vectorLength2Squared = result;
 		return (float) Math.sqrt(result);
 	}
 

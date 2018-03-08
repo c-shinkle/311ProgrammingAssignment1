@@ -13,6 +13,8 @@ public class HashCodeSimilarity {
 	private int shingleLength;
 
 	private ArrayList<Integer> keys;
+	
+	public int numerator, vectorLength1Squared, vectorLength2Squared;
 
 	public HashCodeSimilarity(String s1, String s2, int sLength) {
 		keys = new ArrayList<>();
@@ -32,7 +34,7 @@ public class HashCodeSimilarity {
 	}
 
 	public float similarity() {
-		int numerator = calcNumerator();
+		numerator = calcNumerator();
 		float denominator = lengthOfS1() + lengthOfS2();
 		return numerator / denominator;
 	}
@@ -62,13 +64,17 @@ public class HashCodeSimilarity {
 
 	private float length(boolean isS1) {
 		HashTable table = (isS1) ? table1 : table2;
-		double result = 0;
+		int result = 0;
 		for (Integer key : keys) {
 			ArrayList<Integer> count = countNumberOfEachTypeOfTuple(table.search(key));
 			for (Integer i : count) {
 				result += (i * i);
 			}
 		}
+		if (isS1)
+			vectorLength1Squared = result;
+		else 
+			vectorLength2Squared = result;
 		return (float) Math.sqrt(result);
 	}
 

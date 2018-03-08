@@ -27,25 +27,25 @@ public class HashStringTest {
 	public static float similarityAnswer2 = (float) (21 / (Math.sqrt(21) * Math.sqrt(27)));
 
 	public final double EPSILON = .0000001;
-	
+
 	public static String textFile1 = null;
 	public static String textFile2 = null;
-	
+
 	public void fileScan() throws FileNotFoundException {
-		
-	File test1file = new File("../test1.txt");
-	Scanner sc = new Scanner(test1file);
-	while(sc.hasNext()) {
-		textFile1 = sc.next();
-	}
-	sc.close();
-	
-	File test2file = new File("../test2.txt");
-	Scanner sc2 = new Scanner(test2file);
-	while(sc2.hasNext()) {
-		textFile2 = sc2.next();
-	}
-	sc2.close();
+
+		File test1file = new File("../test1.txt");
+		Scanner sc = new Scanner(test1file);
+		while (sc.hasNext()) {
+			textFile1 = sc.next();
+		}
+		sc.close();
+
+		File test2file = new File("../test2.txt");
+		Scanner sc2 = new Scanner(test2file);
+		while (sc2.hasNext()) {
+			textFile2 = sc2.next();
+		}
+		sc2.close();
 	}
 
 	@Test
@@ -56,11 +56,12 @@ public class HashStringTest {
 		assertEquals(vectorAnswer1, actual1, EPSILON);
 		assertEquals(vectorAnswer2, actual2, EPSILON);
 	}
+
 	@Test
 	public void hashStringSimilarity() {
 		BruteForceSimilarity bfs = new BruteForceSimilarity(similarityString1, similarityString2, shingleLength);
 		float actual = bfs.similarity();
-		assertEquals(similarityAnswer1,actual,EPSILON);
+		assertEquals(similarityAnswer1, actual, EPSILON);
 	}
 
 	@Test
@@ -71,22 +72,26 @@ public class HashStringTest {
 		assertEquals(vectorAnswer3, actual1, EPSILON);
 		assertEquals(vectorAnswer4, actual2, EPSILON);
 	}
+
 	@Test
 	public void hashStringSimilarity2() {
 		HashStringSimilarity bfs = new HashStringSimilarity(similarityString3, similarityString4, shingleLength2);
 		float actual = bfs.similarity();
-		assertEquals(similarityAnswer2,actual,EPSILON);
+		assertEquals(similarityAnswer2, actual, EPSILON);
 	}
-//	@Test
-//	public void testAllSimilarities() {
-//		HashStringSimilarity stringSimilarity = new HashStringSimilarity(textFile1, textFile2, shingleLength);
-//		HashCodeSimilarity codeSimilarity = new HashCodeSimilarity(textFile1, textFile2, shingleLength);
-//		BruteForceSimilarity forceSimilarity = new BruteForceSimilarity(textFile1, textFile2, shingleLength);
-//		float stringSim = stringSimilarity.similarity();
-//		float CodeSim = codeSimilarity.similarity();
-//		float BruteSim = forceSimilarity.similarity();
-//		assertEquals(stringSim,CodeSim,EPSILON);
-//		assertEquals(stringSim,BruteSim,EPSILON);
-//		assertEquals(CodeSim,BruteSim,EPSILON);
-//	}
+	// @Test
+	// public void testAllSimilarities() {
+	// HashStringSimilarity stringSimilarity = new
+	// HashStringSimilarity(textFile1, textFile2, shingleLength);
+	// HashCodeSimilarity codeSimilarity = new HashCodeSimilarity(textFile1,
+	// textFile2, shingleLength);
+	// BruteForceSimilarity forceSimilarity = new
+	// BruteForceSimilarity(textFile1, textFile2, shingleLength);
+	// float stringSim = stringSimilarity.similarity();
+	// float CodeSim = codeSimilarity.similarity();
+	// float BruteSim = forceSimilarity.similarity();
+	// assertEquals(stringSim,CodeSim,EPSILON);
+	// assertEquals(stringSim,BruteSim,EPSILON);
+	// assertEquals(CodeSim,BruteSim,EPSILON);
+	// }
 }
