@@ -11,6 +11,8 @@ public class HashTable {
 
 	private ArrayList<Tuple>[] bucketArray;
 
+	private ArrayList<Tuple> all = new ArrayList<>();
+	
 	private HashFunction hashFunction;
 
 	@SuppressWarnings("unchecked")
@@ -18,7 +20,6 @@ public class HashTable {
 		this.tableSize = smallestPrimeBiggerThan(size);
 		this.hashFunction = new HashFunction(tableSize);
 		bucketArray = new ArrayList[tableSize];
-		prepareBuckets();
 		maxLoad = 0;
 	}
 	
@@ -49,10 +50,13 @@ public class HashTable {
 		if (bucketArray[index] == null) {
 			bucketArray[index] = new ArrayList<>();
 			numberOfUniqueElements++;
+			all.add(t);
 		}
 		else if (!contains(bucketArray[index], t))
 			numberOfUniqueElements++;
+		
 		bucketArray[index].add(t);
+		
 		if (bucketArray[index].size() == maxLoad+1)
 			maxLoad++;
 		if (loadFactor() > 0.7) {
@@ -63,11 +67,11 @@ public class HashTable {
 	public ArrayList<Tuple> search(int k) {
 		ArrayList<Tuple> foundTuples = new ArrayList<Tuple>();
 		int index = hashFunction.hash(k);
-		if (bucketArray[index] != null) {
-			for (int i = 0; i < bucketArray[index].size(); i++) {
-				if (bucketArray[index].get(i).getKey() == k) {
-					foundTuples.add(bucketArray[index].get(i));
-				}
+		if(bucketArray[index] == null)
+			return foundTuples;
+		for (int i = 0; i < bucketArray[index].size(); i++) {
+			if (bucketArray[index].get(i).getKey() == k) {
+				foundTuples.add(bucketArray[index].get(i));
 			}
 		}
 		return foundTuples;
@@ -76,11 +80,11 @@ public class HashTable {
 	public int search(Tuple t) {
 		int numOfTuples = 0;
 		int index = hashFunction.hash(t.getKey());
-		if (bucketArray[index] != null) {
-			for (int i = 0; i < bucketArray[index].size(); i++) {
-				if (bucketArray[index].get(i).equals(t)) {
-					numOfTuples++;
-				}
+		if(bucketArray[index] == null)
+			return 0;
+		for (int i = 0; i < bucketArray[index].size(); i++) {
+			if (bucketArray[index].get(i).equals(t)) {
+				numOfTuples++;
 			}
 		}
 		return numOfTuples;
@@ -100,10 +104,7 @@ public class HashTable {
 		}
 	}
 	
-	private void prepareBuckets() {
-		for (int i = 0; i < bucketArray.length; i++)
-			bucketArray[i] = new ArrayList<Tuple>();
-	}
+
 	
 	@SuppressWarnings("unchecked")
 	private void resizeTable() {
@@ -111,17 +112,12 @@ public class HashTable {
 		hashFunction = new HashFunction(tableSize);
 		maxLoad = numberOfUniqueElements = 0;
 
-		ArrayList<Tuple> allTuples = new ArrayList<>();
-		for (ArrayList<Tuple> al : bucketArray)
-			if (al != null)
-				for (Tuple t : al)
-					if (t != null)
-						allTuples.add(t);
+	
 
 		bucketArray = new ArrayList[tableSize];
-		prepareBuckets();
-		for (Tuple t : allTuples) 
-			add(t);
+		//prepareBuckets();
+		for(int i=0; i<all.size(); i++)
+			add(all.get(i));
 	}
 	
 	private int findLargestBucketList() {
