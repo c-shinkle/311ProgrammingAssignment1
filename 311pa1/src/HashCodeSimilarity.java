@@ -35,7 +35,7 @@ public class HashCodeSimilarity {
 
 	public float similarity() {
 		numerator = calcNumerator();
-		float denominator = lengthOfS1() + lengthOfS2();
+		float denominator = lengthOfS1() * lengthOfS2();
 		return numerator / denominator;
 	}
 
@@ -43,7 +43,7 @@ public class HashCodeSimilarity {
 		int sum = 0;
 		for (Integer key : keys) {
 			ArrayList<Tuple> bin1 = table1.search(key);
-			ArrayList<Tuple> bin2 = table1.search(key);
+			ArrayList<Tuple> bin2 = table2.search(key);
 			if ((bin1 != null && bin2 != null) && (bin1.size() > 0 && bin2.size() > 0)) {
 				int count1 = count(bin1, key);
 				int count2 = count(bin2, key);
