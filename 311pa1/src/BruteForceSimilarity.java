@@ -29,7 +29,7 @@ public class BruteForceSimilarity {
 	
 	public float lengthOfS1() {
 		String sample = this.s1;
-		float squaredval=(float) 0.0;
+		double squaredval=0.0;
 		int counter=0;
 		int j = 0;
 		ArrayList<String> stringHolder = new ArrayList<String>();
