@@ -126,4 +126,5 @@ public class HashStringSimilarity {
 	private boolean tableContains(HashTable table, Tuple key) {
 		return table.search(key) > 0;
 	}
+
 }
