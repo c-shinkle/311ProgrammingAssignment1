@@ -18,11 +18,12 @@ public class Badtests {
 	@Test
 	public void testBruteForceSimilarity() {
 		long time = System.nanoTime();
-		//System.out.println("Started");
-		HashCodeSimilarity c = new HashCodeSimilarity(a,b,8);
+		
+		HashStringSimilarity c = new HashStringSimilarity(a,b,8);
 		time = System.nanoTime()-time;
 		
-		assertEquals(.399,c.similarity(),ep);
+		assertEquals(.397,c.similarity(),ep);
+		System.out.println(time);
 		
 		
 	}

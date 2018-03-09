@@ -81,12 +81,12 @@ public class HashStringSimilarity {
 	}
 
 	private void fillTable(HashTable table, String s) {
-		final int alpha = 31, mod = 2147483647;
+		final int alpha = 7;
 		int hash = 0, power = 1;
 
 		for (int i = shingleLength - 1; i >= 0; i--) {
 			int c = s.charAt(i);
-			hash = (hash + c * power) % mod;
+			hash = (hash + c * power);
 			power *= alpha;
 		}
 
@@ -98,14 +98,14 @@ public class HashStringSimilarity {
 				tuples.add(tmp);
 			table.add(tmp);
 			if (i < s.length() - shingleLength)
-				hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
+				hash = rollingHashFromLecture(hash, s, i, power, alpha);
 		}
 	}
 
-	private int rollingHashFromLecture(int hash, String s, int index, int power, int alpha, int mod) {
+	private int rollingHashFromLecture(int hash, String s, int index, int power, int alpha) {
 		int oldchar = s.charAt(index);
 		int newchar = s.charAt(index + shingleLength);
-		hash = ((hash - (oldchar * power)) * alpha + newchar) % mod;
+		hash = ((hash - (oldchar * power)) * alpha + newchar);
 
 		return hash;
 	}
