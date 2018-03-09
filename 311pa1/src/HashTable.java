@@ -18,10 +18,12 @@ public class HashTable {
 		this.tableSize = smallestPrimeBiggerThan(size);
 		this.hashFunction = new HashFunction(tableSize);
 		bucketArray = new ArrayList[tableSize];
+		prepareBuckets();
 		maxLoad = 0;
-		//prepareArrayList();
 	}
 	
+	
+
 	public int maxLoad() {
 		return maxLoad;
 	}
@@ -98,6 +100,11 @@ public class HashTable {
 		}
 	}
 	
+	private void prepareBuckets() {
+		for (int i = 0; i < bucketArray.length; i++)
+			bucketArray[i] = new ArrayList<Tuple>();
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void resizeTable() {
 		tableSize = smallestPrimeBiggerThan(tableSize * 2);
@@ -112,7 +119,7 @@ public class HashTable {
 						allTuples.add(t);
 
 		bucketArray = new ArrayList[tableSize];
-		//prepareArrayList();
+		prepareBuckets();
 		for (Tuple t : allTuples) 
 			add(t);
 	}
