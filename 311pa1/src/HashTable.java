@@ -159,5 +159,8 @@ public class HashTable {
 				return true;
 		return false;
 	}
+	//public void array
+	//bucket i = new arraylist tuple 
+	
 	
 } 
