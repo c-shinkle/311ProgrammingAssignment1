@@ -19,20 +19,19 @@ public class Badtests {
 	public void testBruteForceSimilarity() {
 		long time = System.nanoTime();
 		//System.out.println("Started");
-		HashStringSimilarity c = new HashStringSimilarity(a,b,8);
+		HashCodeSimilarity c = new HashCodeSimilarity(a,b,8);
 		time = System.nanoTime()-time;
 		
-		assertEquals(.3839,c.similarity(),ep);
+		assertEquals(.399,c.similarity(),ep);
 		
 		
 	}
 //	@Test
-//	public void hashStringVectorLength11() {
-//		long time = System.nanoTime();
-//		System.out.println("Started");
-//		HashStringSimilarity bfs = new HashStringSimilarity(a, b, 8);
-//		time = System.nanoTime()-time;
-//		assertEquals(Math.sqrt(38), bfs.similarity(), .001);
+//	public void numberatorhashCodeSimilarity() {
+//		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, 4);
+//		bfs.similarity();
+//		int expected = 22;
+//		assertEquals(expected, bfs.numerator);
 //	}
 	
 }
