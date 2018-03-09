@@ -37,7 +37,7 @@ public class HashStringSimilarity {
 
 	public float similarity() {
 		numerator = findAllDuplicates();
-		float denominator = lengthOfS1() + lengthOfS2();
+		float denominator = lengthOfS1() * lengthOfS2();
 		return numerator / denominator;
 	}
 
@@ -57,7 +57,7 @@ public class HashStringSimilarity {
 		HashTable table = (isS1) ? table1 : table2;
 		int result = 0;
 		for (Tuple key : tuples) {
-			result += table.search(key);
+			result += (table.search(key))*(table.search(key));
 		}
 		if (isS1)
 			vectorLength1Squared = result;
