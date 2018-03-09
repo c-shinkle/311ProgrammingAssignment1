@@ -14,15 +14,15 @@ public class HashCodeSimilarity {
 
 	private ArrayList<Integer> keys;
 	
-	public int numerator, vectorLength1Squared, vectorLength2Squared;
+	
 
 	public HashCodeSimilarity(String s1, String s2, int sLength) {
 		keys = new ArrayList<>();
 		shingleLength = sLength;
 		table1 = new HashTable(s1.length() - sLength + 1);
 		table2 = new HashTable(s2.length() - sLength + 1);
-		fillTable(table1, s1);
-		fillTable(table2, s2);
+		fillTable(true, s1);
+		fillTable(false, s2);
 	}
 
 	public float lengthOfS1() {
@@ -34,19 +34,24 @@ public class HashCodeSimilarity {
 	}
 
 	public float similarity() {
-		numerator = calcNumerator();
+		int numerator = calcNumerator();
 		float denominator = lengthOfS1() * lengthOfS2();
 		return numerator / denominator;
 	}
 
 	private int calcNumerator() {
 		int sum = 0;
+		
 		for (Integer key : keys) {
+			
 			ArrayList<Tuple> bin1 = table1.search(key);
 			ArrayList<Tuple> bin2 = table2.search(key);
+			
 			if ((bin1 != null && bin2 != null) && (bin1.size() > 0 && bin2.size() > 0)) {
 				int count1 = count(bin1, key);
 				int count2 = count(bin2, key);
+				
+				
 				sum += count1 * count2;
 			}
 		}
@@ -58,6 +63,7 @@ public class HashCodeSimilarity {
 		for (Tuple t : bin) {
 			if (t.getKey() == key)
 				count++;
+			
 		}
 		return count;
 	}
@@ -71,10 +77,7 @@ public class HashCodeSimilarity {
 				result += (i * i);
 			}
 		}
-		if (isS1)
-			vectorLength1Squared = result;
-		else 
-			vectorLength2Squared = result;
+		
 		return (float) Math.sqrt(result);
 	}
 
@@ -98,26 +101,33 @@ public class HashCodeSimilarity {
 		return result;
 	}
 
-	private void fillTable(HashTable table, String s) {
-		final int alpha = 31, mod = 2147483647;
+	private void fillTable(boolean table, String s) {
+		final int alpha = 11;
 		int hash = 0, power = 1;
-
+	
 		for (int i = shingleLength - 1; i >= 0; i--) {
 			int c = s.charAt(i);
-			hash = (hash + c * power) % mod;
+			hash = (hash + c * power) ;
 			power *= alpha;
 		}
 
 		power /= alpha;
-
 		for (int i = 0; i < s.length() - shingleLength + 1; i++) {
-			if (!tableContains(table1, hash) && !tableContains(table2, hash))
+			if (!tableContains(table1, hash) && !tableContains(table2, hash)){
 				keys.add(hash);
+			}
 			String sub = substring(s, i, i + shingleLength);
-			table.add(new Tuple(hash, sub));
+			if(table){
+			table1.add(new Tuple(hash, sub));
+			}
+			else{
+				table2.add(new Tuple(hash, sub));
+				}
 			if (i < s.length() - shingleLength)
-				hash = rollingHashFromLecture(hash, s, i, power, alpha, mod);
+				hash = rollingHashFromLecture(hash, s, i, power, alpha);
 		}
+		
+
 	}
 
 	private String substring(String s, int start, int end) {
@@ -127,10 +137,10 @@ public class HashCodeSimilarity {
 		return new String(arr);
 	}
 
-	private int rollingHashFromLecture(int hash, String s, int index, int power, int alpha, int mod) {
+	private int rollingHashFromLecture(int hash, String s, int index, int power, int alpha) {
 		int oldchar = s.charAt(index);
 		int newchar = s.charAt(index + shingleLength);
-		hash = ((hash - (oldchar * power)) * alpha + newchar) % mod;
+		hash = ((hash - (oldchar * power)) * alpha + newchar) ;
 
 		return hash;
 	}

@@ -82,11 +82,13 @@ public class HashTable {
 		int index = hashFunction.hash(t.getKey());
 		if(bucketArray[index] == null)
 			return 0;
+
 		for (int i = 0; i < bucketArray[index].size(); i++) {
 			if (bucketArray[index].get(i).equals(t)) {
 				numOfTuples++;
 			}
 		}
+	
 		return numOfTuples;
 	}
 
@@ -112,12 +114,13 @@ public class HashTable {
 		hashFunction = new HashFunction(tableSize);
 		maxLoad = numberOfUniqueElements = 0;
 
-	
+
 
 		bucketArray = new ArrayList[tableSize];
 		//prepareBuckets();
 		for(int i=0; i<all.size(); i++)
 			add(all.get(i));
+
 	}
 	
 	private int findLargestBucketList() {
