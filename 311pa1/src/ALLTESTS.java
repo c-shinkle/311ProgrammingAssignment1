@@ -108,6 +108,74 @@ public class ALLTESTS {
 	}
 
 	@Test
+	public void hashCodeVectorLength02() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, shingleLength);
+		bfs.similarity();
+		int expected = 27;
+		assertEquals(expected, bfs.vectorLength2Squared);
+	}
+
+	@Test
+	public void numberatorhashCodeSimilarity() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, shingleLength);
+		bfs.similarity();
+		int expected = 22;
+		assertEquals(expected, bfs.numerator);
+	}
+
+	@Test
+	public void hashCodeVectorLength01part2() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString3, similarityString4, shingleLength2);
+		bfs.similarity();
+		int expected = 28;
+		assertEquals(expected, bfs.vectorLength1Squared);
+	}
+
+	@Test
+	public void hashCodeVectorLength02part2() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString3, similarityString4, shingleLength2);
+		bfs.similarity();
+		int expected = 32;
+		assertEquals(expected, bfs.vectorLength2Squared);
+	}
+
+	@Test
+	public void numberatorhashCodeSimilaritypart2() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString3, similarityString4, shingleLength2);
+		bfs.similarity();
+		int expected = 24;
+		assertEquals(expected, bfs.numerator);
+	}
+	
+	@Test
+	public void hashCodeVectorLength11() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, shingleLength);
+		assertEquals(Math.sqrt(38), bfs.lengthOfS1(), EPSILON);
+	}
+
+	@Test
+	public void hashCodeVectorLength21() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, shingleLength);
+		assertEquals(Math.sqrt(27), bfs.lengthOfS2(), .001);
+	}
+
+	@Test
+	public void numberatorhashCodeSimilarity1() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, shingleLength);
+		
+		assertEquals(.686, bfs.similarity(), .001);
+	}
+
+	//HashCode Tests
+	@Test
+	public void hashCodeVectorLength01() {
+		HashCodeSimilarity bfs = new HashCodeSimilarity(similarityString1, similarityString2, shingleLength);
+		bfs.similarity();
+		int expected = 38;
+		assertEquals(expected, bfs.vectorLength1Squared);
+	}
+	
+	@Test
 	public void hashStringVectorLength02() {
 		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
 		bfs.similarity();
@@ -146,7 +214,7 @@ public class ALLTESTS {
 		int expected = 24;
 		assertEquals(expected, bfs.numerator);
 	}
-
+	
 	@Test
 	public void hashStringVectorLength11() {
 		HashStringSimilarity bfs = new HashStringSimilarity(similarityString1, similarityString2, shingleLength);
@@ -165,23 +233,8 @@ public class ALLTESTS {
 		
 		assertEquals(.686, bfs.similarity(), .001);
 	}
-
-	// @Test
-	// public void testAllSimilarities() {
-	// HashStringSimilarity stringSimilarity = new
-	// HashStringSimilarity(textFile1, textFile2, shingleLength);
-	// HashCodeSimilarity codeSimilarity = new HashCodeSimilarity(textFile1,
-	// textFile2, shingleLength);
-	// BruteForceSimilarity forceSimilarity = new
-	// BruteForceSimilarity(textFile1, textFile2, shingleLength);
-	// float stringSim = stringSimilarity.similarity();
-	// float CodeSim = codeSimilarity.similarity();
-	// float BruteSim = forceSimilarity.similarity();
-	// assertEquals(stringSim,CodeSim,EPSILON);
-	// assertEquals(stringSim,BruteSim,EPSILON);
-	// assertEquals(CodeSim,BruteSim,EPSILON);
-	// }
-
+	
+	
 	// HASH TABLE TESTS
 
 	public static HashTable allSameHashTable() {
